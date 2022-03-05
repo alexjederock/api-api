@@ -5,20 +5,21 @@ const PORT = 3001
 
 const app = express()
 
-const url = 'https://twitter.com/elonmusk/status'
+const url = 'https://theconversation.com/us/topics/gaming'
 
 axios(url).then((res) => {
   const html = res.data
-  console.log(html)
   const $ = cheerio.load(html)
-  const hopefullyTweets = []
-  $('css-1dbjc4n', html).each(() => {
-    const hopefullyTheTitle = $(this).text()
-    hopefullyTweets.push({
-      hopefullyTheTitle,
+  const gameData = []
+  $('.article--header', html).each(function() {
+    const title = $(this).text()
+    const link = $(this).find('a').attr('href')
+    gameData.push({
+      title,
+      link
     })
   })
-  console.log(hopefullyTweets)
+  console.log(gameData)
 })
 
 app.listen(PORT, () => {
